@@ -2,7 +2,7 @@ WLEd Module for Chataigne.
 
 Installation :
 
-	Copy  Nextcloud3\chataigne\modules\WLED to <MyDocuments>\chataigne\modules\WLED.
+	Copy  chataigne\modules\WLED to <MyDocuments>\chataigne\modules\WLED.
 	
 Use it :
 
