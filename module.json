@@ -1,0 +1,377 @@
+{
+	"name": "WLED",
+	"type": "HTTP",
+	"path": "Software",
+	
+	"version": "1.0.0",
+	"description": "send CMD to your WLED",
+	"url":"",
+	"downloadURL": "",
+	"hasInput": true,
+	"hasOutput": true, 
+	"hideDefaultCommands": false,
+	"hideDefaultParameters": [
+		"protocol"
+	],
+	
+	"defaults": {
+		"baseAddress":"http://0.0.0.0:8888/api",
+		"autoAdd": false,
+		"protocol":"JSON",
+		"authentication":
+			{
+				"enabled":false
+			}
+	},
+
+	"parameters": {
+
+		"Default IP": { 
+				"type":"String", 
+				"description": "Default WLED IP address "
+				},
+		"WLED Params":{
+			"type": "Container",
+			"description":"WLED global parameters",
+			"collapsed": false,
+			"WLED Info": {
+				"type": "Trigger",
+				"description": "WLED documentation"
+			},
+			"LoopIP": { 
+				"type": "Boolean", 
+				"description": "Checked, this will also update all WLED devices (IP set in group WLED -- Custom Variables).",
+				"default":false
+			},
+			"UDPReTransmit": { 
+				"type": "Integer", 
+				"min":0,
+				"max":5,
+				"description": "UDP protocol fast but not reliable, choose how many time retransmit packet in case of.(max 5)",
+				"default":0
+			},			
+			"IPManage": { 
+			"type":"Container", 
+			"description": "WLED IP settings",
+			"collapsed": false,
+			"AddIP": {
+				"type":"Trigger",
+				"description": "Click to add IP address"
+				}
+			}
+		}
+	},
+
+	"values": {	
+	},
+	
+	
+	"scripts": [
+		"WLEDCMD.js"
+	],
+	
+	"commands": {
+		
+		"WLED Main":
+		{
+			"menu":"WLED",
+			"callback":"WLEDCommands",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"live":{
+					"type":"Boolean",
+					"description": "Checked, WLED will receive data/command from another device (UDP)",
+					"default":true
+				},
+				"on":{
+					"type":"Boolean",
+					"description": "Checked, WLED will put Led On",
+					"default":false
+				},
+				"UDP":{
+					"type":"Boolean",
+					"description": "Checked, will send data thru UDP (improve speed, but no take care of live & on )",
+					"default":false
+				},
+				"UDPPort ":{
+					"type":"Integer",
+					"description": "If you want to overwrite actual UDP port, put something <> 0",
+					"min":0,
+					"max":65535,
+					"default":0
+				},				
+				"wledcolor ":{
+					"type":"Color",
+					"description": "Select the main color (double click) ",
+					"default":[1,1,1,1]
+				},
+				"bgcolor ":{
+					"type":"Color",
+					"description": "Select the background color (double click) ",
+					"default":[0,0,0,1]
+				},				
+				"brightness ":{
+					"type":"Float",
+					"description": "Select brightness ",
+					"min":0,
+					"max":255,
+					"default":128
+				},
+				"wledeffect ":{
+					"type":"Integer",
+					"description": "ID of the effect. TIP: To see all indexes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
+					"min":0,
+					"max":117,
+					"default":0
+				},
+				"fxspeed ":{
+					"type":"Float",
+					"description": "Relative effect speed ",
+					"min":0,
+					"max":255,
+					"default":128
+				},
+				"fxintensity":{
+					"type":"Float",
+					"description": "Effect intensity ",
+					"min":0,
+					"max":255,
+					"default":64
+				},
+				"palette ":{
+					"type":"Integer",
+					"description": "ID of the color palette. TIP: To see all palettes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
+					"min":0,
+					"max":70,
+					"default":0
+				}
+			}
+		},
+		
+		"WLED On-Off":
+		{
+			"menu":"WLED",
+			"callback":"WLEDOnOff",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"live":{
+					"type":"Boolean",
+					"description": "Checked, WLED will receive data/command from another device (UDP)",
+					"default":true
+				},
+				"on":{
+					"type":"Boolean",
+					"description": "Checked, WLED will put Led On",
+					"default":false
+				}
+			}
+		},
+		
+		"WLED Color":
+		{
+			"menu":"WLED",
+			"callback":"WLEDColor",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"wledcolor ":{
+					"type":"Color",
+					"description": "Select the color (double click) ",
+					"default":[1,1,1,1]
+				}
+			}
+		},
+					
+		"WLED Brightness":
+		{
+			"menu":"WLED",
+			"callback":"WLEDBrightness",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"brightness ":{
+					"type":"Float",
+					"description": "Select brightness ",					
+					"min":0,
+					"max":255,
+					"default":128
+				}
+			}
+		},
+				
+		"WLED Effect":
+		{
+			"menu":"WLED",
+			"callback":"WLEDEffect",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"wledeffect ":{
+					"type":"Integer",
+					"description": "ID of the effect. TIP: To see all indexes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
+					"min":0,
+					"max":200,
+					"default":0
+				},
+				"fxspeed ":{
+					"type":"Float",
+					"description": "Relative effect speed ",
+					"min":0,
+					"max":255,
+					"default":128
+				},
+				"fxintensity":{
+					"type":"Float",
+					"description": "Effect intensity ",
+					"min":0,
+					"max":255,
+					"default":64
+				}
+			}
+		},
+		
+		"WLED Effect Next":
+		{
+			"menu":"WLED",
+			"callback":"WLEDEffectNP",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"wledeffect ":{
+					"type":"String",
+					"description": "Set Next effect. ",
+					"default":"~",
+					"readOnly":true
+				}
+			}
+		},
+
+		"WLED Effect Previous":
+		{
+			"menu":"WLED",
+			"callback":"WLEDEffectNP",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"wledeffect ":{
+					"type":"String",
+					"description": "Set Previous effect. ",
+					"default":"~-",
+					"readOnly":true
+				}
+			}
+		},
+		
+		"WLED Palette":
+		{
+			"menu":"WLED",
+			"callback":"WLEDPalette",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"palette":{
+					"type":"Integer",
+					"description": "ID of the color palette. TIP: To see all palettes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
+					"min":0,
+					"max":100,
+					"default":0
+				}
+			}
+		},
+
+		"WLED Palette Next":
+		{
+			"menu":"WLED",
+			"callback":"WLEDPalette",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"palette":{
+					"type":"String",
+					"description": "This will select the next palette from the current ID",
+					"default":"~",
+					"readOnly":true
+				}
+			}
+		},
+
+		"WLED Palette Previous":
+		{
+			"menu":"WLED",
+			"callback":"WLEDPalette",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"palette":{
+					"type":"String",
+					"description": "This will select previous palette from the current ID",
+					"default":"~-",
+					"readOnly":true
+				}
+			}
+		},
+
+		"WLED Reboot":
+		{
+			"menu":"WLED",
+			"callback":"WLEDReboot",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"reboot":{
+					"type":"Boolean",
+					"description": "Checked, reboot WLED",
+					"default":false
+				}
+			}
+		},
+
+		"WLED Info":
+		{
+			"menu":"WLED",
+			"callback":"WLEDInfo",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				}
+			}
+		}
+	}
+}
