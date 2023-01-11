@@ -5,7 +5,7 @@
 	
 	"version": "1.0.0",
 	"description": "send CMD to your WLED",
-	"url":"",
+	"url":"https://github.com/zak-45/WLED-Chataigne-Module",
 	"downloadURL": "",
 	"hasInput": true,
 	"hasOutput": true, 
