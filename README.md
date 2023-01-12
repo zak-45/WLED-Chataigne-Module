@@ -29,3 +29,7 @@ On Command Tester, WLED: all WLED available commands
 On Custom Variables, group WLED:
 	IP(x): change 0.0.0.0 by the IP address of the additional WLED device
 ```
+### ***Info ***
+
+This module use WLED API (Http / Json) to update data. Not all commands have been implemented, but probably the most used ones. 
+UDP Sync can be used if some speed is needed on the WLED update, this is available only for the WLED Main command.
