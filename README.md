@@ -2,8 +2,13 @@
 
 ### ***Installation :***
 
+Manual
 ```
 Copy  to <MyDocuments>\chataigne\modules\WLED.
+```
+From Chataigne 
+```
+Right click on Modules, Get more modules .... and select WLED from Inspector.
 ```
 
 ### ***Use it :***
