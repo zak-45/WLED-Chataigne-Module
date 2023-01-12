@@ -1,4 +1,4 @@
-# **WLEd Module for Chataigne.**
+# **WLED Module for Chataigne.**
 
 ### ***Installation :***
 
