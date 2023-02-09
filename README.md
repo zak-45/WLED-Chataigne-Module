@@ -53,3 +53,8 @@ On Custom Variables, group WLED:
 
 This module use WLED API (Http / Json) to update data. Not all commands have been implemented, but probably the most used ones. 
 UDP Sync can be used if some speed is needed on the WLED update, this is available only for the WLED Main command.
+
+```
+If you want the look and feel of the first screenshots, just use the wled.noisette file and the wled_logo_akemi.png provided.
+
+```
