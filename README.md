@@ -4,6 +4,7 @@
 
 Manual
 ```
+Take all from this repository and 
 Copy  to <MyDocuments>\chataigne\modules\WLED.
 ```
 From Chataigne 
