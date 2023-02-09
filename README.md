@@ -10,6 +10,8 @@ From Chataigne
 ```
 Right click on Modules, Get more modules .... and select WLED from Inspector.
 ```
+![image](https://user-images.githubusercontent.com/121941293/217872642-e380f4ef-6b3b-430d-8ec1-e5aedd09e587.png)
+
 
 ### ***Use it :***
 
