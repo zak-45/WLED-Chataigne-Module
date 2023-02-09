@@ -1,4 +1,5 @@
 # **WLED Module for Chataigne.**
+![image](https://user-images.githubusercontent.com/121941293/217917087-ea2df590-351b-4227-a9d8-8c8d560901e5.png)
 
 ### ***Installation :***
 
