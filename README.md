@@ -21,7 +21,7 @@ Right click on Modules, Get more modules or File/Community modules manager.... a
 ```
 Open  Chataigne.
 
-Go to Modules, right click, Software, WLED
+Go to Modules, right click, Software, WLED if not already installed.
 ```
 ![image](https://user-images.githubusercontent.com/121941293/217875056-b8336e70-1c07-4d93-97de-dde0563a8046.png)
 
