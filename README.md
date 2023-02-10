@@ -34,8 +34,11 @@ Go to Modules, right click, Software, WLED if not already installed.
 On Inspector:
 	Default IP: this will be the default WLED IP address used (cause could be more than one)
 	LoopIP : check it if you want to update more than one WLED device.
+	     IP set in group WLED -- Custom Variables and only for HTTP.
 	UDPReTransmit : number of time to retransmit UDP packet.
+	     UDP protocol fast but not reliable, choose how many time retransmit packet in case of (max 5).
 	AddIP : click on it to create a new entry where you can put additional WLED IP address to manage.
+	     This will create a new IP parameter into the WLED Custom variables group.
 ```
 ![image](https://user-images.githubusercontent.com/121941293/217876721-c0be515b-d0a1-4bec-a425-339e973e9822.png)
 
