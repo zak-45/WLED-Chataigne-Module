@@ -3,7 +3,7 @@
 	"type": "HTTP",
 	"path": "Software",
 	
-	"version": "1.1.0",
+	"version": "1.1.3",
 	"description": "send CMD to your WLED",
 	"url":"https://github.com/zak-45/WLED-Chataigne-Module",
 	"downloadURL": "https://github.com/zak-45/WLED-Chataigne-Module/archive/refs/heads/main.zip",
@@ -43,17 +43,22 @@
 				"description": "Checked, this will also update all WLED devices (IP set in group WLED -- Custom Variables and only for HTTP).",
 				"default":false
 			},
+			"AddIP": {
+				"type":"Trigger",
+				"description": "Click to add IP address"
+			},			
 			"UDPReTransmit": { 
 				"type": "Integer", 
 				"min":0,
 				"max":5,
 				"description": "UDP protocol fast but not reliable, choose how many time retransmit packet in case of.(max 5)",
 				"default":0
-			},			
-			"AddIP": {
-				"type":"Trigger",
-				"description": "Click to add IP address"
-			}
+			},
+			"UseWS": { 
+				"type": "Boolean", 
+				"description": "Use Websocket connection, mainly to be used for realtime update (will not take care of LoopIP = ignore)",
+				"default":false
+			}			
 		}
 	},
 
@@ -274,7 +279,7 @@
 					"type":"String",
 					"description": "Set Next effect. ",
 					"default":"~",
-					"readOnly":true
+					"readOnly":false
 				}
 			}
 		},
@@ -355,7 +360,25 @@
 				}
 			}
 		},
-
+		"WLED Playlist":
+		{
+			"menu":"WLED",
+			"callback":"WLEDPlaylist",
+			"parameters":{
+				"wledIP":{
+					"type":"String",
+					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
+					"default":"0.0.0.0"
+				},
+				"playlist":{
+					"type":"Integer",
+					"description": "ID of the playlist.",
+					"min":0,
+					"max":100,
+					"default":0
+				}
+			}
+		},
 		"WLED Reboot":
 		{
 			"menu":"WLED",

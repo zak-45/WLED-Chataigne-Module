@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/10/2022
-v:1.1.0
+v:1.1.3
 
 Chataigne Module for  WLED
 
@@ -68,7 +68,7 @@ var isInit = true;
 var SCAexist = root.modules.getItemWithName("SCAnalyzer");
 
 // default url
-// var wled_url = "http://127.0.0.1/json";;
+var wled_url = "http://127.0.0.1/json";;
 
 //We create necessary entries in modules & custom variables.
 function init ()
@@ -127,19 +127,17 @@ function messageBoxCallback (id, result)
 {
 	script.log("Message box callback : "+id+" : "+result); 
 	
-	if (id=="confirmLedFX")
-	{
-		if (result==1){
-					var launchresult = root.modules.os.launchProcess(LedFXPath+LedFXExeName, false);					
-					script.log("LedFX return code : "+launchresult);					
-		}
-	}
 }
 
 function update()
 {
 	if (isInit === true)
 	{ 
+		if (SCAexist.name == "sCAnalyzer")
+		{
+			util.showMessageBox("WLED !", "SCAnalyzer present, you need to reload its script", "warning", "OK");
+		}
+
 		isInit = false;
 		script.log("isinit");
 	}
@@ -168,19 +166,17 @@ function moduleParameterChanged (param)
 			
 			util.showMessageBox("Add IP ERROR", "WLED Custom Variables group do not exist", "warning", "Got it");
 		}
-	}
-
-	if (param.name == "wledInfo")
-	{
-		util.gotoURL('https://kno.wled.ge/');		
-	}
-	
-	if (param.name == "defaultIP")
-	{
+		
+	} else if (param.name == "wledInfo") {
+		
+		util.gotoURL('https://kno.wled.ge/');
+		
+	} else if (param.name == "defaultIP"){
+		
 		defaultIP = param.get();
 		root.modules.wledsync.parameters.output.remoteHost.set(defaultIP);
 		
-		var wled_url = "http://"+defaultIP+"/json";
+		wled_url = "http://"+defaultIP+"/json";
 		local.parameters.autoAdd.set(0);
 		local.parameters.baseAddress.set(wled_url);
 		
@@ -189,8 +185,14 @@ function moduleParameterChanged (param)
 			WLEDdashboard(defaultIP);
 		}
 		
-	}
+	} else if (param.name == "useWS" && isInit === false) {
+		
+		//script.log("Websocket");
+		if (local.parameters.wledParams.useWS.get() == 1 && local.parameters.defaultIP.get() != "") {
+			createWS(local.parameters.defaultIP.get());
+		}
 
+	}
 }
 
 /*
@@ -423,65 +425,166 @@ function WLEDInfo (wledIP)
 //set palette to WLED device
 function WLEDPalette (wledIP,palette)
 {
-	
-	WLEDMain(wledIP);
+	myIP = WLEDMain(wledIP);
 	
 	var varseg = {'pal':palette};
 	payload.seg = varseg;
+
+	// WS or HTTP
+	if 	( local.parameters.wledParams.useWS.get() == 1 || 
+		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
+	{
+		//script.log("Websocket");
+		ipname = myIP + "-" + "ws";
+		var WSexist = root.modules.getItemWithName(ipname);
+
+		if (WSexist.name != "undefined")
+		{
+			var mydata = JSON.stringify(params.payload);
+			WSexist.send(mydata);
+			
+		} else {
+			
+			script.log("Module WS do not exist");
+			// Create WS 
+			createWS(myIP);
+		}
+		
+	} else {
 	
-	// we post for the default IP
-	local.sendPOST("/state",params);
+		// we post for the default IP
+		local.sendPOST("/state",params);
+
+		// we check if more IP need to be updated
+		WLEDLoopCMD();
+	}	
+}
+
+//set playlist to WLED device
+function WLEDPlaylist (wledIP,playlist)
+{
+	myIP = WLEDMain(wledIP);
 	
-	// we check if more IP need to be updated
-	WLEDLoopCMD();
+	payload.ps = playlist;
+
+	// WS or HTTP
+	if 	( local.parameters.wledParams.useWS.get() == 1 || 
+		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
+	{
+		//script.log("Websocket");
+		ipname = myIP + "-" + "ws";
+		var WSexist = root.modules.getItemWithName(ipname);
+
+		if (WSexist.name != "undefined")
+		{
+			var mydata = JSON.stringify(params.payload);
+			WSexist.send(mydata);
+			
+		} else {
+			
+			script.log("Module WS do not exist");
+			// Create WS 
+			createWS(myIP);
+		}
+		
+	} else {
 	
+		// we post for the default IP
+		local.sendPOST("/state",params);
+
+		// we check if more IP need to be updated
+		WLEDLoopCMD();
+	}	
 }
 
 //set effect to WLED device
 function WLEDEffect (wledIP,wledeffect,fxspeed,fxintensity)
 {
 	
-	WLEDMain(wledIP);
+	var myIP = WLEDMain(wledIP);
 
 	var sx = parseInt(fxspeed);
 	var ix = parseInt(fxintensity);
 	var varseg = {'fx':wledeffect,'sx':sx,'ix':ix};	
 	payload.seg = varseg;
-	
-	// we post for the default IP
-	local.sendPOST("/state",params);
-	
-	script.log("Wled_url : " + wled_url);
+	// WS or HTTP
+	if 	( local.parameters.wledParams.useWS.get() == 1 || 
+		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
+	{
+		//script.log("Websocket");
+		ipname = myIP + "-" + "ws";
+		var WSexist = root.modules.getItemWithName(ipname);
 
-	// we check if more IP need to be updated
-	WLEDLoopCMD();	
+		if (WSexist.name != "undefined")
+		{
+			var mydata = JSON.stringify(params.payload);
+			WSexist.send(mydata);
+			
+		} else {
+			
+			script.log("Module WS do not exist");
+			// Create WS 
+			createWS(myIP);
+		}
+		
+	} else {
+	
+		// we post for the default IP
+		local.sendPOST("/state",params);
+
+		// we check if more IP need to be updated
+		WLEDLoopCMD();
+	}	
 }
 
 //set Next -  Previous effect to WLED device
 function WLEDEffectNP (wledIP,wledeffect)
 {
 	
-	WLEDMain(wledIP);
+	var myIP = WLEDMain(wledIP);
 
 	var varseg = {'fx':wledeffect};	
 	payload.seg = varseg;
 	
-	// we post for the default IP
-	local.sendPOST("/state",params);
+	// WS or HTTP
+	if 	( local.parameters.wledParams.useWS.get() == 1 || 
+		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
+	{
+		//script.log("Websocket");
+		ipname = myIP + "-" + "ws";
+		var WSexist = root.modules.getItemWithName(ipname);
 
-	// we check if more IP need to be updated
-	WLEDLoopCMD();	
+		if (WSexist.name != "undefined")
+		{
+			var mydata = JSON.stringify(params.payload);
+			WSexist.send(mydata);
+			
+		} else {
+			
+			script.log("Module WS do not exist");
+			// Create WS 
+			createWS(myIP);
+		}
+		
+	} else {
+	
+		// we post for the default IP
+		local.sendPOST("/state",params);
+
+		// we check if more IP need to be updated
+		WLEDLoopCMD();
+	}	
 }
 
 //set brightness to WLED device. Use WS if checked and SCAnalyzer present
 function WLEDBrightness(wledIP,brightness)
 {
-	
 	var myIP = WLEDMain(wledIP);	
 	payload.bri = parseInt(brightness);	
 	
-	// WS
-	if ( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1 )
+	// WS or HTTP
+	if 	( local.parameters.wledParams.useWS.get() == 1 || 
+		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
 		ipname = myIP + "-" + "ws";
@@ -512,7 +615,6 @@ function WLEDBrightness(wledIP,brightness)
 //set color to WLED device. Use WS if checked and SCAnalyzer present
 function WLEDColor(wledIP,wledcolor)
 {
-	
 	var myIP = WLEDMain(wledIP);
 
 	var valueR = parseInt(wledcolor[0]*255);
@@ -522,9 +624,9 @@ function WLEDColor(wledIP,wledcolor)
 	var varseg = {'col':[[valueR,valueG,valueB]]};	
 	payload.seg = varseg;
 
-
 	// WS
-	if ( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1 )
+	if 	( local.parameters.wledParams.useWS.get() == 1 || 
+		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
 		ipname = myIP + "-" + "ws";
@@ -550,7 +652,6 @@ function WLEDColor(wledIP,wledcolor)
 		// we check if more IP need to be updated
 		WLEDLoopCMD();
 	}
-
 }
 
 //set live & On  to WLED device
@@ -649,7 +750,7 @@ function createWS(wsip)
 	var ipname = wsip + "-" + "ws";
 	var WSexist = root.modules.getItemWithName(ipname);
 
-	if (WSexist != undefined)
+	if (WSexist.name != "undefined")
 	{	
 		script.log("Module WS exist");
 		
