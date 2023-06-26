@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/10/2022
-v:1.1.3
+v:1.2.0
 
 Chataigne Module for  WLED
 
@@ -135,7 +135,7 @@ function update()
 	{ 
 		if (SCAexist.name == "sCAnalyzer")
 		{
-			util.showMessageBox("WLED !", "SCAnalyzer present, you need to reload its script", "warning", "OK");
+			// util.showMessageBox("WLED !", "SCAnalyzer present, you need to reload its script", "warning", "OK");
 		}
 
 		isInit = false;
@@ -250,7 +250,7 @@ function WLEDLoopCMD()
 		{
 			script.log("WLED -- Number of additional IP address : "+additionalIP.length);
 			
-			for (i = 0; i < additionalIP.length; i++) 
+			for ( var i = 0; i < additionalIP.length; i++) 
 			{ 
 		
 				if (additionalIP[i].name.contains("ip"))
@@ -267,7 +267,7 @@ function WLEDLoopCMD()
 						if (udp)
 						{
 							root.modules.wledsync.sendBytesTo(addIP,uDPPort,udpdata);
-							for (j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
+							for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
 							{
 								root.modules.wledsync.sendBytesTo(addIP,uDPPort,udpdata);
 							}
@@ -298,7 +298,7 @@ function WLEDLoopCMD()
 }
 
 // Set all parameters to WLED device
-function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,wledeffect,fxspeed,fxintensity,palette,wledgroup,wledws,wledps)
+function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,wledeffect,fxspeed,fxintensity,palette,wledgroup,wledws,wledps,wledtt)
 {
 
 	// brightness
@@ -332,7 +332,7 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 		}
 		
 		root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
-		for (j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
+		for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
 			{
 				root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
 			}
@@ -356,7 +356,7 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 			} 
 			
 			root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
-			for (j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
+			for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
 				{
 					root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
 				}		
@@ -375,7 +375,10 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 			{
 				payload.ps = wledps;
 			}
-		
+			if (wledtt != -1)
+			{
+				payload.tt = wledtt;
+			}		
 			// WS
 			if (wledws == 1)
 			{
