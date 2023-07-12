@@ -3,7 +3,7 @@
 	"type": "HTTP",
 	"path": "Software",
 	
-	"version": "1.2.0",
+	"version": "1.4.0",
 	"description": "send CMD to your WLED",
 	"url":"https://github.com/zak-45/WLED-Chataigne-Module",
 	"downloadURL": "https://github.com/zak-45/WLED-Chataigne-Module/archive/refs/heads/main.zip",
@@ -85,12 +85,12 @@
 				"live":{
 					"type":"Boolean",
 					"description": "Checked, WLED will receive data/command from another device (UDP)",
-					"default":true
+					"default":false
 				},
 				"on":{
 					"type":"Boolean",
 					"description": "Checked, WLED will put Led On",
-					"default":false
+					"default":true
 				},
 				"UDP":{
 					"type":"Boolean",
@@ -165,6 +165,8 @@
 					"type":"Integer",
 					"description": "Preset/playlist number (used by SCAnalyzer)",
 					"default":0,
+					"min":0,
+					"max":255,
 					"readOnly":false
 				},
 				"wledtt":{
@@ -193,12 +195,12 @@
 				"live":{
 					"type":"Boolean",
 					"description": "Checked, WLED will receive data/command from another device (UDP)",
-					"default":true
+					"default":false
 				},
 				"on":{
 					"type":"Boolean",
 					"description": "Checked, WLED will put Led On",
-					"default":false
+					"default":true
 				}
 			}
 		},
