@@ -53,6 +53,14 @@ On Custom Variables, group WLED:
 ```
 ![image](https://user-images.githubusercontent.com/121941293/217877867-e991865b-5033-409a-b99b-73b650732ef6.png)
 
+## Video
+Wled main features show:
+
+https://youtu.be/Q1RK74ZtQqg
+
+![image](https://github.com/zak-45/WLED-Chataigne-Module/assets/121941293/89fa5472-8529-4f9e-9c58-c7a060471c31)
+
+---
 
 
 ### ***Info ***
