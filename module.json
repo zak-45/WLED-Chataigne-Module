@@ -3,7 +3,7 @@
 	"type": "HTTP",
 	"path": "Software",
 	
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"description": "send CMD to your WLED",
 	"url":"https://github.com/zak-45/WLED-Chataigne-Module",
 	"downloadURL": "https://github.com/zak-45/WLED-Chataigne-Module/archive/refs/heads/main.zip",
@@ -38,23 +38,26 @@
 				"type": "Trigger",
 				"description": "WLED documentation"
 			},
-			"LoopIP": { 
+			"Update all IP": { 
 				"type": "Boolean", 
 				"description": "Checked, this will also update all WLED devices (IP set in group WLED -- Custom Variables and only for HTTP).",
+				"shortName": "loopIP",
 				"default":false
 			},
-			"AddIP": {
+			"Add new IP to manage": {
 				"type":"Trigger",
-				"description": "Click to add IP address"
+				"description": "Click to add IP address",
+				"shortName": "addIP"
 			},			
-			"UDPReTransmit": { 
+			"Re Transmit UDP packet": { 
 				"type": "Integer", 
 				"min":0,
 				"max":5,
 				"description": "UDP protocol fast but not reliable, choose how many time retransmit packet in case of.(max 5)",
+				"shortName": "uDPReTransmit",
 				"default":0
 			},
-			"UseWS": { 
+			"Use WS": { 
 				"type": "Boolean", 
 				"description": "Use Websocket connection, mainly to be used for realtime update (will not take care of LoopIP = ignore)",
 				"default":false
@@ -97,83 +100,93 @@
 					"description": "Checked, will send data thru UDP (improve speed, but no take care of live & on )",
 					"default":false
 				},
-				"UDPPort ":{
+				"UDP Port number":{
 					"type":"Integer",
-					"description": "If you want to overwrite actual UDP port, put something <> 0",
+					"description": "If you want to overwrite actual UDP port (set in WLEDSYNC module), put something <> 0",
+					"shortName": "uDPPort",
 					"min":0,
 					"max":65535,
 					"default":0
 				},				
-				"wledcolor ":{
+				"Main Color":{
 					"type":"Color",
 					"description": "Select the main color (double click) ",
+					"shortName": "wledcolor",
 					"default":[1,1,1,1]
 				},
-				"bgcolor ":{
+				"BackGround Color":{
 					"type":"Color",
 					"description": "Select the background color (double click) ",
+					"shortName": "bgcolor",
 					"default":[0,0,0,1]
 				},				
-				"brightness ":{
+				"brightness":{
 					"type":"Float",
 					"description": "Select brightness ",
 					"min":0,
 					"max":255,
 					"default":128
 				},
-				"wledeffect ":{
+				"Effect Index":{
 					"type":"Integer",
 					"description": "ID of the effect. TIP: To see all indexes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
+					"shortName": "wledeffect",
 					"min":0,
 					"max":200,
 					"default":0
 				},
-				"fxspeed ":{
+				"Effect Speed":{
 					"type":"Float",
 					"description": "Relative effect speed ",
+					"shortName": "fxspeed",
 					"min":0,
 					"max":255,
 					"default":128
 				},
-				"fxintensity":{
+				"Effect Intensity":{
 					"type":"Float",
 					"description": "Effect intensity ",
+					"shortName": "fxintensity",
 					"min":0,
 					"max":255,
 					"default":64
 				},
-				"palette ":{
+				"palette":{
 					"type":"Integer",
 					"description": "ID of the color palette. TIP: To see all palettes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
 					"min":0,
 					"max":70,
 					"default":0
 				},
-				"wledgroup":{
+				"Group name":{
 					"type":"String",
-					"description": "WLED Group name (used by SCAnalyzer)",
+					"description": "Group name from where take data (used by SCAnalyzer)",
+					"shortName": "wledgroup",
 					"default":"",
 					"readOnly":false
 				},
-				"wledws":{
+				"Use WS":{
 					"type":"Boolean",
 					"description": "WebSocket for WLED (used by SCAnalyzer)",
+					"shortName": "wledws",
 					"default":false,
 					"readOnly":false
 				},
-				"wledps":{
+				"PS number":{
 					"type":"Integer",
 					"description": "Preset/playlist number (used by SCAnalyzer)",
+					"shortName": "wledps",
 					"default":0,
 					"min":0,
 					"max":255,
 					"readOnly":false
 				},
-				"wledtt":{
+				"Transition time":{
 					"type":"Integer",
 					"description": "Duration of the crossfade between different colors/brightness levels. 
 	One unit is 100ms, so a value of 4 results in a transition of 400ms. This applies to just the current API call.
 	Not included in state response (used by SCAnalyzer)",
+					"shortName": "wledtt",
 					"default":-1,
 					"min": -1,
 					"max": 255,
@@ -215,9 +228,10 @@
 					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
 					"default":"0.0.0.0"
 				},
-				"wledcolor ":{
+				"Main Color ":{
 					"type":"Color",
 					"description": "Select the color (double click) ",
+					"shortName" : "wledcolor",
 					"default":[1,1,1,1]
 				}
 			}
@@ -253,23 +267,26 @@
 					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
 					"default":"0.0.0.0"
 				},
-				"wledeffect ":{
+				"Index":{
 					"type":"Integer",
 					"description": "ID of the effect. TIP: To see all indexes and names, command 'WLED info' and take a look at modules WLED -- Values  ",
+					"shortName": "wledeffect",
 					"min":0,
 					"max":200,
 					"default":0
 				},
-				"fxspeed ":{
+				"Speed":{
 					"type":"Float",
 					"description": "Relative effect speed ",
+					"shortName": "fxspeed",
 					"min":0,
 					"max":255,
 					"default":128
 				},
-				"fxintensity":{
+				"Intensity":{
 					"type":"Float",
 					"description": "Effect intensity ",
+					"shortName" : "fxintensity",
 					"min":0,
 					"max":255,
 					"default":64
@@ -287,9 +304,10 @@
 					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
 					"default":"0.0.0.0"
 				},
-				"wledeffect ":{
+				"Next effect ~>":{
 					"type":"String",
 					"description": "Set Next effect. ",
+					"shortName": "wledeffect",
 					"default":"~",
 					"readOnly":false
 				}
@@ -306,9 +324,10 @@
 					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
 					"default":"0.0.0.0"
 				},
-				"wledeffect ":{
+				"Previous effect <~-":{
 					"type":"String",
 					"description": "Set Previous effect. ",
+					"shortName": "wledeffect",
 					"default":"~-",
 					"readOnly":true
 				}

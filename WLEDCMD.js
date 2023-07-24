@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/10/2022
-v:1.4.0
+v:1.5.0
 
 Chataigne Module for  WLED
 
@@ -244,7 +244,7 @@ function WLEDLoopCMD()
 		
 				if (additionalIP[i].name.contains("ip"))
 				{				
-					ipname = additionalIP[i].name;
+					var ipname = additionalIP[i].name;
 					
 					var newIP = additionalIP[i].getChild(ipname);				
 					var addIP = newIP.get();
@@ -369,7 +369,7 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 			if (wledws == 1)
 			{
 				//script.log("Websocket");
-				ipname = myIP + "-" + "ws";
+				var ipname = myIP + "-" + "ws";
 				var WSexist = root.modules.getItemWithName(ipname);
 
 				if (WSexist.name != "undefined")
@@ -406,13 +406,10 @@ function WLEDInfo (wledIP)
 	local.sendGET("","json");	
 }
 
-
-
 //set palette to WLED device
 function WLEDPalette (wledIP,palette)
 {
-	myIP = WLEDMain(wledIP);
-	
+	var myIP = WLEDMain(wledIP);	
 	var varseg = {'pal':palette};
 	payload.seg = varseg;
 
@@ -421,7 +418,7 @@ function WLEDPalette (wledIP,palette)
 		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
-		ipname = myIP + "-" + "ws";
+		var ipname = myIP + "-" + "ws";
 		var WSexist = root.modules.getItemWithName(ipname);
 
 		if (WSexist.name != "undefined")
@@ -449,8 +446,7 @@ function WLEDPalette (wledIP,palette)
 //set playlist to WLED device
 function WLEDPlaylist (wledIP,playlist)
 {
-	myIP = WLEDMain(wledIP);
-	
+	var myIP = WLEDMain(wledIP);	
 	payload.ps = playlist;
 
 	// WS or HTTP
@@ -458,7 +454,7 @@ function WLEDPlaylist (wledIP,playlist)
 		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
-		ipname = myIP + "-" + "ws";
+		var ipname = myIP + "-" + "ws";
 		var WSexist = root.modules.getItemWithName(ipname);
 
 		if (WSexist.name != "undefined")
@@ -488,7 +484,6 @@ function WLEDEffect (wledIP,wledeffect,fxspeed,fxintensity)
 {
 	
 	var myIP = WLEDMain(wledIP);
-
 	var sx = parseInt(fxspeed);
 	var ix = parseInt(fxintensity);
 	var varseg = {'fx':wledeffect,'sx':sx,'ix':ix};	
@@ -498,7 +493,7 @@ function WLEDEffect (wledIP,wledeffect,fxspeed,fxintensity)
 		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
-		ipname = myIP + "-" + "ws";
+		var ipname = myIP + "-" + "ws";
 		var WSexist = root.modules.getItemWithName(ipname);
 
 		if (WSexist.name != "undefined")
@@ -526,9 +521,7 @@ function WLEDEffect (wledIP,wledeffect,fxspeed,fxintensity)
 //set Next -  Previous effect to WLED device
 function WLEDEffectNP (wledIP,wledeffect)
 {
-	
 	var myIP = WLEDMain(wledIP);
-
 	var varseg = {'fx':wledeffect};	
 	payload.seg = varseg;
 	
@@ -537,7 +530,7 @@ function WLEDEffectNP (wledIP,wledeffect)
 		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
-		ipname = myIP + "-" + "ws";
+		var ipname = myIP + "-" + "ws";
 		var WSexist = root.modules.getItemWithName(ipname);
 
 		if (WSexist.name != "undefined")
@@ -573,7 +566,7 @@ function WLEDBrightness(wledIP,brightness)
 		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
-		ipname = myIP + "-" + "ws";
+		var ipname = myIP + "-" + "ws";
 		var WSexist = root.modules.getItemWithName(ipname);
 
 		if (WSexist.name != "undefined")
@@ -602,7 +595,6 @@ function WLEDBrightness(wledIP,brightness)
 function WLEDColor(wledIP,wledcolor)
 {
 	var myIP = WLEDMain(wledIP);
-
 	var valueR = parseInt(wledcolor[0]*255);
 	var valueG = parseInt(wledcolor[1]*255);
 	var valueB = parseInt(wledcolor[2]*255);
@@ -615,7 +607,7 @@ function WLEDColor(wledIP,wledcolor)
 		( SCAexist.name == "sCAnalyzer" && root.modules.sCAnalyzer.parameters.wledParams.useWebSocket.get() == 1) )
 	{
 		//script.log("Websocket");
-		ipname = myIP + "-" + "ws";
+		var ipname = myIP + "-" + "ws";
 		var WSexist = root.modules.getItemWithName(ipname);
 
 		if (WSexist.name != "undefined")
@@ -643,7 +635,6 @@ function WLEDColor(wledIP,wledcolor)
 //set live & On  to WLED device (only HTTP)
 function WLEDOnOff(wledIP,live,on)
 {
-	
 	WLEDMain(wledIP);
 	
 	payload.live = live;
@@ -722,6 +713,7 @@ function WLEDdashboard(defaultIP)
 		newdash.dashboard.canvasSize.set(600,400);
 		var newiframe = newdash.dashboard.addItem("IFrame"); 
 		newiframe.url.set("http://"+defaultIP);
+		newiframe.viewUIPosition.set(-300,-200);
 		newiframe.viewUISize.set(600,400);
 
 		newdash.setName("WLED Web Page");
