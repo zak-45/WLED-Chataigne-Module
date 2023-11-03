@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/10/2022
-v:1.5.0
+v:1.6.0
 
 Chataigne Module for  WLED
 
@@ -62,6 +62,7 @@ var payload = {}; //the payload can be either a simple string or an object that 
 
 // UDP 
 var UDP_SYNC = [];
+var udpModule = root.modules.getItemWithName("WLEDSYNC");
 
 // init
 var isInit = true;
@@ -75,35 +76,6 @@ function init ()
 {
 	script.log("-- Custom command called init()");	
 	
-	var DFexist = root.customVariables.getItemWithName("WLED");	
-	var UDPexist = root.modules.getItemWithName("WLEDSYNC");
-	
-	if (DFexist.name == "wled")
-	{
-		
-		script.log("Default variables group WLED exist");
-		
-		} else {
-			
-			var newDFCustomVariables = root.customVariables.addItem("WLED"); 
-			newDFCustomVariables.setName("WLED");	
-	}
-
-	if (UDPexist.name == "wledsync")
-	{
-		
-		script.log("WLED UDP SYNC exist");
-		
-		} else {
-			
-			var newUDP = root.modules.addItem("UDP");
-			newUDP.parameters.autoAdd.set(false);
-			newUDP.parameters.input.enabled.set(false);
-			newUDP.parameters.output.local.set(false);			
-			newUDP.parameters.output.remotePort.set(21324);
-			newUDP.setName("WLEDSYNC");	
-	}
-
 	var infos = util.getOSInfos(); 
 	
 	script.log("Hello "+infos.username);	
@@ -127,7 +99,35 @@ function update()
 				
 			script.log('No SCAnalyzer found');			
 		}
+
+		if (checkModuleExist("WLEDSync"))
+		{
+			
+			script.log("WLED UDP SYNC exist");
+			
+			} else {
+				
+				udpModule = root.modules.addItem("UDP");
+				udpModule.parameters.autoAdd.set(false);
+				udpModule.parameters.input.enabled.set(false);
+				udpModule.parameters.output.local.set(false);			
+				udpModule.parameters.output.remotePort.set(21324);
+				udpModule.setName("WLEDSYNC");	
+		}
+
+		var DFexist = root.customVariables.getItemWithName("WLED");	
 		
+		if (DFexist.name == "wled")
+		{
+			
+			script.log("Default variables group WLED exist");
+			
+			} else {
+				
+				var newDFCustomVariables = root.customVariables.addItem("WLED"); 
+				newDFCustomVariables.setName("WLED");	
+		}
+
 		isInit = false;
 		script.log("isinit");
 	}
@@ -169,7 +169,7 @@ function moduleParameterChanged (param)
 			defaultIP = "127.0.0.1";
 		}
 		
-		root.modules.wledsync.parameters.output.remoteHost.set(defaultIP);		
+		udpModule.parameters.output.remoteHost.set(defaultIP);		
 		
 		wled_url = "http://"+defaultIP+"/json";
 		local.parameters.autoAdd.set(0);
@@ -187,7 +187,6 @@ function moduleParameterChanged (param)
 			createWS(local.parameters.defaultIP.get());
 			local.parameters.wledParams.loopIP.set(0);
 		}
-
 	}
 }
 
@@ -255,10 +254,10 @@ function WLEDLoopCMD()
 						
 						if (udp)
 						{
-							root.modules.wledsync.sendBytesTo(addIP,uDPPort,udpdata);
+							udpModule.sendBytesTo(addIP,uDPPort,udpdata);
 							for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
 							{
-								root.modules.wledsync.sendBytesTo(addIP,uDPPort,udpdata);
+								udpModule.sendBytesTo(addIP,uDPPort,udpdata);
 							}
 							
 						} else {
@@ -315,14 +314,14 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 		
 		if (uDPPort == 0)
 		{
-			uDPPort = root.modules.wledsync.parameters.output.remotePort.get();
+			uDPPort = udpModule.parameters.output.remotePort.get();
 		}
 		
-		root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
+		udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 		
 		for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
 			{
-				root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
+				udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 			}
 	
 	// Http or UDP or WS
@@ -337,14 +336,14 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 			var udpdata = udpsync();
 			if (uDPPort == 0)
 			{
-				uDPPort = root.modules.wledsync.parameters.output.remotePort.get();
+				uDPPort = udpModule.parameters.output.remotePort.get();
 			} 
 			
-			root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
+			udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 			
 			for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
 				{
-					root.modules.wledsync.sendBytesTo(myIP,uDPPort,udpdata);
+					udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 				}		
 			
 		} else {
@@ -742,3 +741,15 @@ function createWS(wsip)
 		
 	}	
 }
+
+function checkModuleExist (moduleName)
+{
+	var moduleExist = root.modules.getItemWithName(moduleName);
+	var result = false;
+	if (moduleExist.name != "undefined")
+	{
+		result = true;
+	}
+	return result;
+}
+
