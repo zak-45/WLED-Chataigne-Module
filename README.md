@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/121941293/283798323-94bb9a2c-65b0-4d98-a483-e49d4d9b0eb1.png)
+
 # **WLED Module for Chataigne.**
 
 GitHub: https://github.com/benkuper/Chataigne
