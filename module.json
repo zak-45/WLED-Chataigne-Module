@@ -3,7 +3,7 @@
 	"type": "HTTP",
 	"path": "Software",
 	
-	"version": "1.6.0",
+	"version": "1.6.1",
 	"description": "send CMD to your WLED",
 	"url":"https://github.com/zak-45/WLED-Chataigne-Module",
 	"downloadURL": "https://github.com/zak-45/WLED-Chataigne-Module/archive/refs/heads/main.zip",

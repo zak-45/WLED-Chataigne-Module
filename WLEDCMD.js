@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/10/2022
-v:1.6.0
+v:1.6.1
 
 Chataigne Module for  WLED
 
@@ -80,14 +80,17 @@ function init ()
 	
 	script.log("Hello "+infos.username);	
 	script.log("We run under : "+infos.name);
-	
+
+	//
+	script.setUpdateRate(1);
 }
 
 function update()
 {
 	if (isInit === true)	
 	{ 
-
+		isInit = false;
+		
 		if (SCAexist.name == "sCAnalyzer")
 		{	
 			script.log("SCAnalyzer present");
@@ -104,6 +107,7 @@ function update()
 		{
 			
 			script.log("WLED UDP SYNC exist");
+			udpModule = root.modules.getItemWithName("WLEDSYNC");
 			
 			} else {
 				
@@ -128,7 +132,6 @@ function update()
 				newDFCustomVariables.setName("WLED");	
 		}
 
-		isInit = false;
 		script.log("isinit");
 	}
 }
@@ -169,7 +172,10 @@ function moduleParameterChanged (param)
 			defaultIP = "127.0.0.1";
 		}
 		
-		udpModule.parameters.output.remoteHost.set(defaultIP);		
+		if (isInit === false) 
+		{
+			udpModule.parameters.output.remoteHost.set(defaultIP);
+		}
 		
 		wled_url = "http://"+defaultIP+"/json";
 		local.parameters.autoAdd.set(0);
