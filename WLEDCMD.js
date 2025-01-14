@@ -774,7 +774,5 @@ script.log('current dir: ' + util.getCurrentFileDirectory());
 script.log('current path: ' + util.getCurrentFilePath());
 script.log('app ver: ' + util.getAppVersion());
 script.log('local name : ' + local.niceName);
-script.log(util.getParentDirectory("SCAnalyzer.js"));
-var zz= util.getObjectMethods();
-script.log('zz' + zz);
+
 }
