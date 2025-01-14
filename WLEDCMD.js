@@ -63,7 +63,7 @@ var payload = {}; //the payload can be either a simple string or an object that 
 
 // UDP 
 var UDP_SYNC = [];
-var udpModule = root.modules.getItemWithName("WLEDSYNC");
+var udpModule = root.modules.getItemWithName(local.niceName+'SYNC');
 
 // init
 var isInit = true;
@@ -104,11 +104,12 @@ function update()
 			script.log('No SCAnalyzer found');			
 		}
 
-		if (checkModuleExist("WLEDSync"))
+        // check UDP module
+		if (checkModuleExist(local.niceName+'SYNC'))
 		{
 			
-			script.log("WLED UDP SYNC exist");
-			udpModule = root.modules.getItemWithName("WLEDSYNC");
+			script.log("WLED UDP SYNC exist as : " + local.niceName+'SYNC');
+			udpModule = root.modules.getItemWithName(local.niceName+'SYNC');
 			
 			} else {
 				
@@ -117,20 +118,20 @@ function update()
 				udpModule.parameters.input.enabled.set(false);
 				udpModule.parameters.output.local.set(false);			
 				udpModule.parameters.output.remotePort.set(21324);
-				udpModule.setName("WLEDSYNC");	
+				udpModule.setName(local.niceName+'SYNC');
 		}
 
-		var DFexist = root.customVariables.getItemWithName("WLED");	
+		var DFexist = root.customVariables.getItemWithName(local.niceName);
 		
-		if (DFexist.name == "wled")
+		if (DFexist.niceName == local.niceName)
 		{
 			
-			script.log("Default variables group WLED exist");
+			script.log("Default variables group WLED exist as " + local.niceName);
 			
 			} else {
 				
-				var newDFCustomVariables = root.customVariables.addItem("WLED"); 
-				newDFCustomVariables.setName("WLED");	
+				var newDFCustomVariables = root.customVariables.addItem("WLED");
+				newDFCustomVariables.setName(local.niceName);
 		}
 
 		script.log("isinit");
@@ -144,21 +145,21 @@ function moduleParameterChanged (param)
 	// Add WLED IP address to manage 
 	if (param.name == "addIP")
 	{
-		var groupExist = root.customVariables.getItemWithName("WLED");
+		var groupExist = root.customVariables.getItemWithName(local.niceName);
 		
-		if (groupExist.name == "wled")
+		if (groupExist.niceName == local.niceName)
 		{
 			
-			var newIP = root.customVariables.wled.variables.addItem("String Parameter");
+			var newIP = groupExist.variables.addItem("String Parameter");
 			newIP.setName("IP");
 			var newIPV = newIP.getChild(newIP.name);
 			newIPV.set("0.0.0.0");
 			
-			util.showMessageBox("Add IP", "Additional IP has been set into WLED Custom Variables group, go there and set the IP address", "Info", "Got it");
+			util.showMessageBox("Add IP", "Additional IP has been set into WLED Custom Variables group: "+groupExist.niceName+", go there and set the IP address", "Info", "Got it");
 		
 		} else {
 			
-			util.showMessageBox("Add IP ERROR", "WLED Custom Variables group do not exist", "warning", "Got it");
+			util.showMessageBox("Add IP ERROR", "WLED Custom Variables group:"+local.niceName+" do not exist", "warning", "Got it");
 		}
 		
 	} else if (param.name == "wledInfo") {
@@ -239,7 +240,10 @@ function WLEDLoopCMD()
 	if ( testloop == 1 )
 	{
 		// retreive variables
-		var additionalIP = root.customVariables.wled.variables.getItems();
+		//select right custom variables Group
+		var groupName = root.customVariables.getItemWithName(local.niceName);
+		// find all IP into
+		var additionalIP = groupName.variables.getItems();
 		
 		if (additionalIP)
 		{
@@ -760,3 +764,17 @@ function checkModuleExist (moduleName)
 	return result;
 }
 
+// used for value/expression testing .......
+function testScript()
+{
+
+script.log('documents: ' + util.getDocumentsDirectory());
+script.log('desktop: ' + util.getDesktopDirectory());
+script.log('current dir: ' + util.getCurrentFileDirectory());
+script.log('current path: ' + util.getCurrentFilePath());
+script.log('app ver: ' + util.getAppVersion());
+script.log('local name : ' + local.niceName);
+script.log(util.getParentDirectory("SCAnalyzer.js"));
+var zz= util.getObjectMethods();
+script.log('zz' + zz);
+}
