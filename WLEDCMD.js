@@ -2,11 +2,12 @@
 
 a:zak45
 d:25/10/2022
-v:1.6.1
+v:2.0.0
 
 Chataigne Module for  WLED
 
 you can modify mains params to one or more WLED devices (at same time)
+mote than one WLED module possible
 
 Parameters can be sent via UDP when need some "real time".
 
