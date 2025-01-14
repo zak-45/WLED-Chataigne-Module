@@ -709,9 +709,9 @@ return UDP_SYNC;
 // create / update WLED dashboard
 function WLEDdashboard(defaultIP)
 {
-	var dashExist = root.dashboards.getItemWithName("wledWebPage");
+	var dashExist = root.dashboards.getItemWithName(local.niceName);
 	
-	if (dashExist.name == "wledWebPage"){
+	if (dashExist.niceName == local.niceName){
 
 		dashExist.dashboard.iFrame.url.set('http://' + defaultIP);
 		script.log('Dashboard present');
@@ -726,7 +726,7 @@ function WLEDdashboard(defaultIP)
 		newiframe.viewUIPosition.set(-300,-200);
 		newiframe.viewUISize.set(600,400);
 
-		newdash.setName("WLED Web Page");
+		newdash.setName(local.niceName);
 
 		root.dashboards.editMode.set(false);
 	}
