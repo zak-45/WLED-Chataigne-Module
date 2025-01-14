@@ -59,6 +59,7 @@ On Command Tester, WLED: all WLED available commands
 ```
 On Custom Variables, group WLED:
 	IP(x): change 0.0.0.0 by the IP address of the additional WLED device
+ 
 ```
 ![image](https://user-images.githubusercontent.com/121941293/217877867-e991865b-5033-409a-b99b-73b650732ef6.png)
 
@@ -77,6 +78,9 @@ https://youtu.be/Q1RK74ZtQqg
 This module use WLED API (Http / Json) to update data. Not all commands have been implemented, but probably the most used ones. 
 UDP Sync can be used if some speed is needed on the WLED update, this is available only for the WLED Main command.
 
+For each WLED module with name e.g. xxxxx, an additional UDP module will be created with name xxxxxSYNC and 
+a custom Variables group with name xxxxx. 
+If you rename the WLED module, you need to do that also to the additional module/group by keeping naming convention.
 ```
 If you want the look and feel of the first screenshots, just use the wled.noisette file and the wled_logo_akemi.png provided.
 
