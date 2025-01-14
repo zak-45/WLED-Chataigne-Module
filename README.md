@@ -2,18 +2,25 @@
 
 # **WLED Module for Chataigne.**
 
-GitHub: https://github.com/benkuper/Chataigne
+Manage your WLED devices from Chataigne. 
+
+Integrate WLED device in easy way to your Chataigne project. UDP / WS options for speed implemented. 
+More than one module at same time. From one module you can manage ***n*** devices, or you can define ***m*** modules.
 
 ![image](https://user-images.githubusercontent.com/121941293/217917087-ea2df590-351b-4227-a9d8-8c8d560901e5.png)
 ![image](https://user-images.githubusercontent.com/121941293/217917410-3da07bff-7557-4584-a38e-68da940dde93.png)
 ![image](https://user-images.githubusercontent.com/121941293/217919097-581316d6-cd22-4679-8509-b634ba67878a.png)
 
+### ***Pre-request :***
+You need Chataigne installed, min. ver: 1.9.27
+
+GitHub: https://github.com/benkuper/Chataigne
 ### ***Installation :***
 
 Manual
 ```
 Take all from this repository and 
-Copy  to <MyDocuments>\chataigne\modules\WLED.
+Copy  to <MyDocuments>\Chataigne\modules\WLED.
 ```
 From Chataigne 
 ```
