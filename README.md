@@ -12,7 +12,7 @@ More than one module at same time. From one module you can manage ***n*** device
 ![image](https://user-images.githubusercontent.com/121941293/217919097-581316d6-cd22-4679-8509-b634ba67878a.png)
 
 ### ***Pre-request :***
-You need Chataigne installed, min. ver: 1.9.27
+You need Chataigne installed, min. ver: 1.9.25
 
 get soft : https://benjamin.kuperberg.fr/chataigne/en#download
 
