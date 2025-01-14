@@ -266,7 +266,7 @@ function WLEDLoopCMD()
 						if (udp)
 						{
 							udpModule.sendBytesTo(addIP,uDPPort,udpdata);
-							for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
+							for ( var j = 0; j < local.parameters.wledParams.uDPReTransmit.get(); j++)
 							{
 								udpModule.sendBytesTo(addIP,uDPPort,udpdata);
 							}
@@ -330,7 +330,7 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 		
 		udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 		
-		for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
+		for ( var j = 0; j < local.parameters.wledParams.uDPReTransmit.get(); j++)
 			{
 				udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 			}
@@ -352,7 +352,7 @@ function WLEDCommands (wledIP,live,on,udp,uDPPort,wledcolor,bgcolor,brightness,w
 			
 			udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 			
-			for ( var j = 0; j < root.modules.wled.parameters.wledParams.uDPReTransmit.get(); j++)
+			for ( var j = 0; j < local.parameters.wledParams.uDPReTransmit.get(); j++)
 				{
 					udpModule.sendBytesTo(myIP,uDPPort,udpdata);
 				}		
@@ -774,5 +774,6 @@ script.log('current dir: ' + util.getCurrentFileDirectory());
 script.log('current path: ' + util.getCurrentFilePath());
 script.log('app ver: ' + util.getAppVersion());
 script.log('local name : ' + local.niceName);
+script.log('retransmit : ' + local.parameters.wledParams.uDPReTransmit.get());
 
 }
