@@ -401,9 +401,10 @@
 					"description": "WLED IP address. If 0.0.0.0 or nul, we will take the one from WLED Params -- variable.DefaultIP",
 					"default":"0.0.0.0"
 				},
-				"playlist":{
+				"playlist/preset":{
 					"type":"Integer",
 					"description": "ID of the playlist/preset.",
+					"shortName": "playlist",
 					"min":0,
 					"max":100,
 					"default":0
