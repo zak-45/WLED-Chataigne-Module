@@ -114,7 +114,6 @@ function update()
 			} else {
 				
 				udpModule = root.modules.addItem("UDP");
-				udpModule.parameters.autoAdd.set(false);
 				udpModule.parameters.input.enabled.set(false);
 				udpModule.parameters.output.local.set(false);			
 				udpModule.parameters.output.remotePort.set(21324);
@@ -180,7 +179,6 @@ function moduleParameterChanged (param)
 		}
 		
 		wled_url = "http://"+defaultIP+"/json";
-		local.parameters.autoAdd.set(0);
 		local.parameters.baseAddress.set(wled_url);
 		
 		if (isInit === false)
@@ -223,7 +221,6 @@ function WLEDMain(wledIP)
 
 	wled_url = "http://"+wledIP+"/json";
 
-	local.parameters.autoAdd.set(0);
 	local.parameters.baseAddress.set(wled_url);
 	
 	script.log("WLED URL : " + wled_url);
@@ -746,7 +743,6 @@ function createWS(wsip)
 		
 		var newWSModule = root.modules.addItem("WebSocket Client");
 		newWSModule.parameters.protocol.set("JSON");
-		newWSModule.parameters.autoAdd.set(false);
 		newWSModule.parameters.serverPath.set(wsip+"/ws");
 		newWSModule.setName(wsip+"-"+"ws");
 		
